@@ -1,4 +1,4 @@
-import '../styles/image.css';
+import '../styles/image.scss';
 import small from '../images/small.jpg';
 
 const img = document.createElement('img');

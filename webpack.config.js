@@ -4,6 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
+    devtool: process.env.NODE_ENV === 'development' ? 'source-map' : '',
     entry: {
         /* List of npm modules that must go into vendor bundle.
         Check CommonsChunkPlugin to avoid duplicate modules in vendor and app bundles
@@ -26,9 +27,9 @@ module.exports = {
                 //You can use style-loader instead of ExtractTextPlugin to inject css as a style tag into html document
                 //use: ['style-loader', 'css-loader']
                 use: ExtractTextPlugin.extract({
-                    use: 'css-loader',
+                    use: ['css-loader?sourceMap', 'sass-loader?sourceMap'],
                 }),
-                test: /\.css$/,
+                test: /\.(css|scss)$/,
             },
             {
                 test: /\.(jpg|jpeg)/,
