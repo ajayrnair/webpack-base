@@ -45,7 +45,7 @@ module.exports = {
         ],
     },
     plugins: [
-        new ExtractTextPlugin('styles.css'),
+        new ExtractTextPlugin('styles[contenthash].css'),
         //Commons Chunk Plugin to specify not to duplicate the modules
         //between vendor and app bundle. If common put it in the vendor module
         //as mentioned in the names array
