@@ -3,8 +3,9 @@ var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-module.exports = {
-    devtool: process.env.NODE_ENV === 'development' ? 'source-map' : '',
+
+const config = {
+    devtool: 'source-map',
     entry: {
         /* List of npm modules that must go into vendor bundle.
         Check CommonsChunkPlugin to avoid duplicate modules in vendor and app bundles
@@ -19,7 +20,7 @@ module.exports = {
     },
     module: {
         rules: [{
-                use: 'babel-loader',
+                use: [{ loader: 'babel-loader', options: { presets: ['env'] } }],
                 test: /\.js$/,
                 exclude: /node_modules/,
             },
@@ -55,6 +56,20 @@ module.exports = {
         //Use src/index.html as template and add all the bundles in a script tag automatically
         new HtmlWebpackPlugin({
             template: 'src/index.html',
-        }),
+        })
     ],
 };
+
+if (process.env.NODE_ENV === "production") {
+    console.log("Building for production....");
+    console.log("Will use uglify and also set NODE_ENV");
+    config.plugins.push(new webpack.DefinePlugin({
+            // set node_env for libraries to use production / dev versions
+			'process.env.NODE_ENV': JSON.stringify('production')
+        }),
+        new webpack.optimize.UglifyJsPlugin({ // eslint-disable-line
+            sourceMap: true //using source maps in production
+        })
+    );
+}
+module.exports = config;
